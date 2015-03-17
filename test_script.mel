@@ -1,0 +1,2 @@
+string $markers[] = `ls -type "transform" -long`;
+print (size($markers));
