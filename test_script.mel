@@ -1,13 +1,22 @@
-string $markers[] = `ls -type "transform" -long`;
+string $markers[] = {"LFHD", "RFHD", "LBHD", "RBHD", "C7", "T10", "CLAV", "STRN", "RBAC", "LSHO", "LUPA", "LELB", 
+"LFRM", "LWRA", "LWRB", "LFIN", "RSHO", "RUPA", "RELB", "RFRM", "RWRA", "RWRB", "RFIN", 
+"LFWT", "RFWT", "LBWT", "RBWT", "LTHI", "LKNE", "LSHN", "LANK", "LHEE", "LTOE", "LMT5", 
+"RTHI", "RKNE", "RSHN", "RANK", "RHEE", "RTOE", "RMT5"};
+
+//string $markers[] = `ls -type "transform" -long`;
 print (size($markers));
 
 proc createCubes(string $markers[]) {
     for( $i = 0; $i < size($markers); $i++) {
         
-        sphere -n test;
-        string $x = `getAttr -type test.translate`;
+        //$marker = select $markers[$i];
+        //int $x = `getAttr $marker.translateX`;
+        
+        //sphere -n test;
+        //string $x = `getAttr -type test.translate`;
+        //select $markers[$i]; 
         //float $x = getAttr($markers[$i].translateX);
-        polyCube -w 10.0 -h 10.0 -d 10.0;
+        //polyCube -w 10.0 -h 10.0 -d 10.0;
         //move -a x y z;
     }
 }
