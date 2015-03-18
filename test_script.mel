@@ -1,2 +1,15 @@
 string $markers[] = `ls -type "transform" -long`;
 print (size($markers));
+
+proc createCubes(string $markers[]) {
+    for( $i = 0; $i < size($markers); $i++) {
+        
+        sphere -n test;
+        string $x = `getAttr -type test.translate`;
+        //float $x = getAttr($markers[$i].translateX);
+        polyCube -w 10.0 -h 10.0 -d 10.0;
+        //move -a x y z;
+    }
+}
+
+createCubes($markers);
