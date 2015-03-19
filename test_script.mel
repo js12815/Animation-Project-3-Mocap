@@ -24,4 +24,14 @@ proc createCubes(string $markers[]) {
     }
 }
 
-createCubes($markers);
+/* Test function to call createCubes on each frame. */
+proc createCubesEveryFrame(string $markers[], int $endFrame){
+    
+    for( $i = 1; $i <= $endFrame; $i++) {
+        currentTime $i;
+        createCubes($markers);
+    }    
+}
+
+//createCubes($markers);
+createCubesEveryFrame($markers, 335);
