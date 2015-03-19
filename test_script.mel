@@ -33,5 +33,27 @@ proc createCubesEveryFrame(string $markers[], int $endFrame){
     }    
 }
 
+/* Test function to create a polygon with vertices at the mocap marker
+   positions for a single frame. */
+proc createPoly(string $markers[]) {
+    
+    string $buildCommand = "";
+    for( $i = 1; $i <= size($markers); $i++) {
+        //Get x, y, and z positions for each marker.
+        string $currentMarker = $markers[$i];
+        $x = `getAttr ($currentMarker + ".translateX")`;
+        $y = `getAttr ($currentMarker + ".translateY")`;
+        $z = `getAttr ($currentMarker + ".translateZ")`;
+        
+        $buildCommand = $buildCommand + "-p" + $x + $y + $z;
+    }
+    //Currently doesn't work, trying to figure out why
+    //polyCreateFacet $buildCommand;
+}
+
+/* Uncomment one of these tests to see shit happen
+   Be warned that createCubesEveryFrame is kind of slow on my computer.
+   Dunno how it'll be like on your computer but my comp has a pretty good graphics card*/
 //createCubes($markers);
-createCubesEveryFrame($markers, 335);
+//createCubesEveryFrame($markers, 335);
+//createPoly($markers);
