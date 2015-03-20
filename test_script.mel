@@ -38,16 +38,37 @@ proc createPoly(string $markers[]) {
         
         if($i == size($markers) - 1) {
             $buildCommand = $buildCommand + "-p" + " " + $x + " " + $y + " " + $z;
-            //$buildCommand = $buildCommand + "-p $x $y $z";
         } else {
             $buildCommand = $buildCommand + "-p" + " " + $x + " " + $y + " " + $z + " ";
-            //$buildCommand = $buildCommand + "-p $x $y $z ";
         }
     }
-    //Currently doesn't work, trying to figure out why
     //polyCreateFacet $buildCommand;
     eval $buildCommand;
 }
+
+/* Create a polygonal strip following a marker 
+   Works but it doesn't generate dynamically */
+proc createStrip(string $markers[], int $endFrame, int $markerNum) {
+    
+    string $currentMarker = $markers[$markerNum];
+    string $cmd = "polyCreateFacet ";
+    
+    for($i = 1; $i <= $endFrame; $i++) {
+        currentTime $i;
+        
+        float $x = `getAttr ($currentMarker + ".translateX")`;
+        float $y = `getAttr ($currentMarker + ".translateY")`;
+        float $z = `getAttr ($currentMarker + ".translateZ")`;
+        
+        if($i == $endFrame) {
+            $cmd += "-p" + " " + $x + " " + $y + " " + $z;
+        } else {
+            $cmd += "-p" + " " + $x + " " + $y + " " + $z + " ";
+        }
+    }
+    eval $cmd;
+}
+
 
 /* Test function to call a function on each frame. */
 proc createEveryFrame(string $markers[], int $endFrame){
@@ -64,4 +85,5 @@ proc createEveryFrame(string $markers[], int $endFrame){
    Dunno how it'll be like on your computer but my comp has a pretty good graphics card*/
 //createCubes($markers);
 //createPoly($markers);
-createEveryFrame($markers, 350);
+//createEveryFrame($markers, 350);
+createStrip($markers, 350, 0);
