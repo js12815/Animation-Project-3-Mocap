@@ -24,15 +24,6 @@ proc createCubes(string $markers[]) {
     }
 }
 
-/* Test function to call createCubes on each frame. */
-proc createCubesEveryFrame(string $markers[], int $endFrame){
-    
-    for( $i = 1; $i <= $endFrame; $i++) {
-        currentTime $i;
-        createCubes($markers);
-    }    
-}
-
 /* Test function to create a polygon with vertices at the mocap marker
    positions for a single frame. */
 proc createPoly(string $markers[]) {
@@ -58,9 +49,19 @@ proc createPoly(string $markers[]) {
     eval $buildCommand;
 }
 
+/* Test function to call a function on each frame. */
+proc createEveryFrame(string $markers[], int $endFrame){
+    
+    for( $i = 1; $i <= $endFrame; $i++) {
+        currentTime $i;
+        //createCubes($markers);
+        createPoly($markers);
+    }    
+}
+
 /* Uncomment one of these tests to see shit happen
    Be warned that createCubesEveryFrame is kind of slow on my computer.
    Dunno how it'll be like on your computer but my comp has a pretty good graphics card*/
 //createCubes($markers);
-//createCubesEveryFrame($markers, 335);
-createPoly($markers);
+//createPoly($markers);
+createEveryFrame($markers, 350);
