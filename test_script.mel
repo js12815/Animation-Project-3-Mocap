@@ -69,6 +69,44 @@ proc createStrip(string $markers[], int $endFrame, int $markerNum) {
     eval $cmd;
 }
 
+proc createSmallStrips(string $markers[], int $endFrame, int $markerNum) {
+    
+    string $currentMarker = $markers[$markerNum];
+    //string $cmd = "polyCreateFacet ";
+    
+    for($i = 1; $i <= $endFrame; $i += 1) {
+        
+        string $cmd = "polyCreateFacet ";
+        currentTime $i;
+        
+        float $x = `getAttr ($currentMarker + ".translateX")`;
+        float $y = `getAttr ($currentMarker + ".translateY")`;
+        float $z = `getAttr ($currentMarker + ".translateZ")`;
+        
+        $cmd += "-p" + " " + $x + " " + $y + " " + $z + " ";
+        
+        currentTime ($i+1);
+        
+        $x = `getAttr ($currentMarker + ".translateX")`;
+        $y = `getAttr ($currentMarker + ".translateY")`;
+        $z = `getAttr ($currentMarker + ".translateZ")`;
+        
+        $cmd += "-p" + " " + $x + " " + $y + " " + $z + " ";
+        
+        currentTime ($i+2);
+        
+        $x = `getAttr ($currentMarker + ".translateX")`;
+        $y = `getAttr ($currentMarker + ".translateY")`;
+        $z = `getAttr ($currentMarker + ".translateZ")`;
+        
+        $cmd += "-p" + " " + $x + " " + $y + " " + $z;
+        
+        eval $cmd;
+    }
+    
+}
+
+
 
 /* Test function to call a function on each frame. */
 proc createEveryFrame(string $markers[], int $endFrame){
@@ -86,4 +124,5 @@ proc createEveryFrame(string $markers[], int $endFrame){
 //createCubes($markers);
 //createPoly($markers);
 //createEveryFrame($markers, 350);
-createStrip($markers, 350, 0);
+//createStrip($markers, 350, 0);
+createSmallStrips($markers, 350, 0);
