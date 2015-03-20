@@ -118,13 +118,19 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
     float $x;
     float $y;
     float $z;
-    string $command_array[size($markers)]; 
+    //string $command_array[(size($markers))]; 
+    //int $test = size($markers);
+    
+    //print($test);
+    string $command_array[41];
     
     for($i = 1; $i <= $endFrame; $i += 1) {
+        
         
         for($j = 0; $j < size($markers); $j++) {
             $command_array[$j] = "polyCreateFacet ";
         }
+        
         
         for($j = 0; $j < size($markers); $j++) {
             
@@ -135,10 +141,13 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
             $x = `getAttr ($currentMarker + ".translateX")`;
             $y = `getAttr ($currentMarker + ".translateY")`;
             $z = `getAttr ($currentMarker + ".translateZ")`;
+            
+            string $test = $command_array[$j];
         
-            $command_array[$j] += "-p" + " " + $x + " " + $y + " " + $z + " ";
+            $command_array[$j] = $test + "-p" + " " + $x + " " + $y + " " + $z + " ";
         }
         
+        /*
         for($j = 0; $j < size($markers); $j++) {
             
             string $currentMarker = $markers[$j];
@@ -168,7 +177,7 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
         
         for($j = 0; $j < size($markers0; $j++) {
             eval $command_array[$j];
-        }
+        }*/
         
     }
     
