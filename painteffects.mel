@@ -1,0 +1,56 @@
+
+
+//selecting poly and adding paint effect
+
+select -r polysurface 213 
+// this is the part im unsure of but i think thats the code
+
+assignNewPfxToon 
+select -r pfxToon4 ;     
+source "/Applications/Autodesk/maya2015/Maya.app/Contents/brushes/pens/bPointScribbleIndigo.mel";
+// Result: bpointScribbleIndigo // 
+select -tgl  ;
+
+hide polysurface
+
+//attributes for pfxtoonshape and for bPointScribble
+
+//makes lines farther apart (if you want)
+setAttr "pfxToonShape4.lineWidth" 0.791139; 
+setAttr "bpointScribbleIndigo3.globalScale" 7.278912; (makes lines thicker)
+setAttr "bpointScribbleIndigo3.tubesPerStep" 3.252033; (adds more tubes)
+setAttr "bpointScribbleIndigo3.lengthMin" 2.520325;   (changes length of tubes)
+setAttr "bpointScribbleIndigo3.lengthMax" 2.357724;
+setAttr "bpointScribbleIndigo3.tubeWidth1" 0.0715447;
+setAttr "bpointScribbleIndigo3.tubeRand" 0.276423;
+
+setAttr "bpointScribbleIndigo3.segments" 4;
+
+setAttr "bpointScribbleIndigo3.startTubes" 1.626016;
+
+
+select -r pfxToon4 ;  
+
+doPaintEffectsToPoly( 1,0,0,1,100000);
+connectAttr -f bpointScribbleIndigo3Shader.outColor bpointScribbleIndigo3ShaderSG.surfaceShader;
+
+
+
+//Materials (i just picked random things)
+
+
+select -r bpointScribbleIndigo3Main ;
+shadingNode -asShader blinn;
+// Result: blinn2 // 
+sets -renderable true -noSurfaceShader true -empty -name blinn2SG;
+// Result: blinn2SG // 
+connectAttr -f blinn2.outColor blinn2SG.surfaceShader;
+// Result: Connected blinn2.outColor to blinn2SG.surfaceShader. // 
+assignCreatedShader "blinn" "" blinn2 "bpointScribbleIndigo3Main";
+sets -e -forceElement blinn2SG;
+// Result: blinn2SG // 
+// Created shader blinn and assigned to the selected objects. //
+setAttr "blinn2.color" -type double3 0.803418 0.803418 0.803418 ;
+setAttr "blinn2.ambientColor" -type double3 0.376074 0.376074 0.376074 ;
+setAttr "blinn2.incandescence" -type double3 0.358968 0.358968 0.358968 ;
+setAttr "blinn2.transparency" -type double3 0.188037 0.188037 0.188037 ;
