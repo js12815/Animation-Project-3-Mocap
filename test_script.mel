@@ -110,7 +110,7 @@ proc createSmallStrips(string $markers[], int $endFrame, int $markerNum) {
 }
 
 /* Weird slow broken function */
-proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
+proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
     
     //string $currentMarker = $markers[$markerNum];
     //string $cmd = "polyCreateFacet ";
@@ -124,7 +124,7 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
     //print($test);
     string $command_array[41];
     
-    for($i = 1; $i <= $endFrame; $i += 1) {
+    for($i = 1; $i <= $endFrame; $i += $jump) {
         
         
         for($j = 0; $j < size($markers); $j++) {
@@ -147,7 +147,7 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
             $command_array[$j] = $test + "-p" + " " + $x + " " + $y + " " + $z + " ";
         }
         
-        /*
+        
         for($j = 0; $j < size($markers); $j++) {
             
             string $currentMarker = $markers[$j];
@@ -158,8 +158,12 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
             $y = `getAttr ($currentMarker + ".translateY")`;
             $z = `getAttr ($currentMarker + ".translateZ")`;
         
-            $command_array[$j] += "-p" + " " + $x + " " + $y + " " + $z + " ";
+            string $test = $command_array[$j];
+        
+            $command_array[$j] = $test + "-p" + " " + $x + " " + $y + " " + $z + " ";
         }
+        
+        
         
         for($j = 0; $j < size($markers); $j++) {
             
@@ -171,13 +175,15 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame) {
             $y = `getAttr ($currentMarker + ".translateY")`;
             $z = `getAttr ($currentMarker + ".translateZ")`;
         
-            $command_array[$j] += "-p" + " " + $x + " " + $y + " " + $z;
+            string $test = $command_array[$j];
+        
+            $command_array[$j] = $test + "-p" + " " + $x + " " + $y + " " + $z + " ";
         }
         
         
-        for($j = 0; $j < size($markers0; $j++) {
+        for($j = 0; $j < size($markers); $j++) {
             eval $command_array[$j];
-        }*/
+        }
         
     }
     
@@ -203,4 +209,4 @@ proc createEveryFrame(string $markers[], int $endFrame){
 //createEveryFrame($markers, 350);
 //createStrip($markers, 350, 0);
 //createSmallStrips($markers, 350, 0);
-createSmallStripsAllMarkers($markers, 350);
+createSmallStripsAllMarkers($markers, 20, 4);
