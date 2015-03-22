@@ -5,8 +5,71 @@ string $markers[] = {"LFHD", "RFHD", "LBHD", "RBHD", "C7", "T10", "CLAV", "STRN"
 "RTHI", "RKNE", "RSHN", "RANK", "RHEE", "RTOE", "RMT5"};
 
 /* Create paint effects brush */
+
+/*
 proc createPaintEffects() {
     
+    setAttr "bpointScribbleIndigo1.globalScale" 7.278912; //(makes lines thicker)
+    setAttr "bpointScribbleIndigo1.tubesPerStep" 3.252033; //(adds more tubes)
+    setAttr "bpointScribbleIndigo1.lengthMin" 2.520325;   //(changes length of tubes)
+    setAttr "bpointScribbleIndigo1.lengthMax" 2.357724;
+    setAttr "bpointScribbleIndigo1.tubeWidth1" 0.0715447;
+    setAttr "bpointScribbleIndigo1.tubeRand" 0.276423;
+            
+    setAttr "bpointScribbleIndigo1.segments" 4;
+            
+    setAttr "bpointScribbleIndigo1.startTubes" 1.626016;
+    
+    //doPaintEffectsToPoly(1, 0, 0, 1, 100000);
+    
+    connectAttr -f bpointScribbleIndigo1Shader.outColor bpointScribbleIndigo1ShaderSG.surfaceShader;
+    
+    select -r bpointScribbleIndigo1Main ;
+    shadingNode -asShader blinn;
+    // Result: blinn2 // 
+    sets -renderable true -noSurfaceShader true -empty -name blinn1SG;
+    // Result: blinn2SG // 
+    //connectAttr -f blinn1.outColor blinn1SG.surfaceShader; 
+    // Result: Connected blinn2.outColor to blinn2SG.surfaceShader. // 
+    assignCreatedShader "blinn" "" blinn1 "bpointScribbleIndigo1Main";
+    sets -e -forceElement blinn1SG;
+    // Result: blinn2SG // 
+    // Created shader blinn and assigned to the selected objects. //
+    setAttr "blinn1.color" -type double3 0.803418 0.803418 0.803418 ;
+    setAttr "blinn1.ambientColor" -type double3 0.376074 0.376074 0.376074 ;
+    setAttr "blinn1.incandescence" -type double3 0.358968 0.358968 0.358968 ;
+    setAttr "blinn1.transparency" -type double3 0.188037 0.188037 0.188037 ;
+            
+    
+}*/
+
+proc afterPolyStuff(int $num) {
+    
+    if($num == 0) {
+        connectAttr -f bpointScribbleIndigo1Shader.outColor bpointScribbleIndigo1ShaderSG.surfaceShader;
+    }
+    //connectAttr -f bpointScribbleIndigo1Shader.outColor bpointScribbleIndigo1ShaderSG.surfaceShader;
+    
+    select -r bpointScribbleIndigo1Main ;
+    shadingNode -asShader blinn;
+    // Result: blinn2 // 
+    sets -renderable true -noSurfaceShader true -empty -name blinn1SG;
+    // Result: blinn2SG // 
+    
+    if($num == 0) {
+        connectAttr -f blinn1.outColor blinn1SG.surfaceShader; 
+    }
+    
+    //connectAttr -f blinn1.outColor blinn1SG.surfaceShader; 
+    // Result: Connected blinn2.outColor to blinn2SG.surfaceShader. // 
+    assignCreatedShader "blinn" "" blinn1 "bpointScribbleIndigo1Main";
+    sets -e -forceElement blinn1SG;
+    // Result: blinn2SG // 
+    // Created shader blinn and assigned to the selected objects. //
+    setAttr "blinn1.color" -type double3 0.803418 0.803418 0.803418 ;
+    setAttr "blinn1.ambientColor" -type double3 0.376074 0.376074 0.376074 ;
+    setAttr "blinn1.incandescence" -type double3 0.358968 0.358968 0.358968 ;
+    setAttr "blinn1.transparency" -type double3 0.188037 0.188037 0.188037 ;
 }
 
 
@@ -15,6 +78,8 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
     
     //string $currentMarker = $markers[$markerNum];
     //string $cmd = "polyCreateFacet ";
+    
+    int $toonCount = 0;
     
     float $x;
     float $y;
@@ -88,32 +153,38 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
             select -r $polygon;
             assignNewPfxToon;
             
-            string $newToon = "pfxToon" + ($j + 1);
+            string $newToon = "pfxToon" + ($toonCount + 1);
+            string $newToonShape = "pfxToonShape" + ($toonCount + 1);
+            $toonCount = $toonCount + 1;
             //print($toonName);
             
-            select -r $newToon;
-            
-
-/*
-            //select -r pfxToon1;     
+            select -r $newToon;   
+            setAttr ($newToonShape + ".lineWidth") 0.791139; 
+            hide $polygon;
             
             //Mac
             //source "/Applications/Autodesk/maya2015/Maya.app/Contents/brushes/pens/bPointScribbleIndigo.mel";
             
             //Windows
-            source "D:/Program Files/Autodesk/Maya2014/brushes/pens/bPointScribbleIndigo.mel";
-            assignBrushToPfxToon;
+            //source "D:/Program Files/Autodesk/Maya2014/brushes/pens/bPointScribbleIndigo.mel";
+            //assignBrushToPfxToon;
+            
+            //if($toonCount == 0) {
+            //createPaintEffects();
+            //}
             
             // Result: bpointScribbleIndigo // 
-            select -tgl;
+            //select -tgl;
             
             //hide polysurface
-            hide $polygon;
+            //hide $polygon;
             
             //attributes for pfxtoonshape and for bPointScribble
         
             //makes lines farther apart (if you want)
-            setAttr "pfxToonShape1.lineWidth" 0.791139; 
+            //setAttr ($newToonShape + ".lineWidth") 0.791139; 
+            
+            /*
             setAttr "bpointScribbleIndigo1.globalScale" 7.278912; //(makes lines thicker)
             setAttr "bpointScribbleIndigo1.tubesPerStep" 3.252033; //(adds more tubes)
             setAttr "bpointScribbleIndigo1.lengthMin" 2.520325;   //(changes length of tubes)
@@ -123,21 +194,20 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
             
             setAttr "bpointScribbleIndigo1.segments" 4;
             
-            setAttr "bpointScribbleIndigo1.startTubes" 1.626016;
+            setAttr "bpointScribbleIndigo1.startTubes" 1.626016;*/
             
             
-            select -r pfxToon1;  
+            //select -r $newToon;
             
-            doPaintEffectsToPoly( 1,0,0,1,100000);
+            //doPaintEffectsToPoly( 1,0,0,1,100000);
             
-            if($j == 0) {
-                //connectAttr -f bpointScribbleIndigo1Shader.outColor bpointScribbleIndigo1ShaderSG.surfaceShader;
-            }
             
+            //afterPolyStuff($toonCount);
             
             
             //Materials (i just picked random things)
             
+            /*
             
             select -r bpointScribbleIndigo1Main ;
             shadingNode -asShader blinn;
@@ -155,8 +225,8 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
             setAttr "blinn1.color" -type double3 0.803418 0.803418 0.803418 ;
             setAttr "blinn1.ambientColor" -type double3 0.376074 0.376074 0.376074 ;
             setAttr "blinn1.incandescence" -type double3 0.358968 0.358968 0.358968 ;
-            setAttr "blinn1.transparency" -type double3 0.188037 0.188037 0.188037 ;
-            */
+            setAttr "blinn1.transparency" -type double3 0.188037 0.188037 0.188037 ;*/
+            
         }
         
     }
@@ -164,4 +234,4 @@ proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
 }
 
 /* Uncomment to run */
-createSmallStripsAllMarkers($markers, 20, 4);
+createSmallStripsAllMarkers($markers, 20, 2);
