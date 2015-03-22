@@ -109,7 +109,7 @@ proc createSmallStrips(string $markers[], int $endFrame, int $markerNum) {
     
 }
 
-/* Weird slow broken function */
+/* Create all the polygon paths simultaneously */
 proc createSmallStripsAllMarkers(string $markers[], int $endFrame, int $jump) {
     
     //string $currentMarker = $markers[$markerNum];
