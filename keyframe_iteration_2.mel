@@ -1,0 +1,45 @@
+/* Iterate through the final mesh groups and keyframe their visibility.
+   Count is the total number of objects.
+   baseName is the base name of the objects
+   markerCount is the number of objects in each set. */
+proc keyframe_mesh_groups(int $count, string $baseName, int $markerCount, int $startFrame) {
+    
+    /* Make them all invisible at the beginning */
+    for($i = 1; $i <= $count; $i++) {
+        string $currentObj = $baseName + $i;
+        string $constructString = $currentObj + ".visibility";
+        currentTime 0;
+        setAttr $constructString 0;
+        setKeyframe -breakdown 0 -hierarchy none -controlPoints 0 -shape 0 {$currentObj};
+    }
+    
+    
+    //int $currentFrame = 1;
+    //$currentFrame = 1;
+    //currentTime 1;
+    int $currentFrame = $startFrame;
+    currentTime $startFrame;
+        
+    for($i = 1; $i <= $count; $i++) {
+        
+        string $currentObj = $baseName + $i;
+        print($currentObj);
+        
+        //Get visibility attribute of each object 
+        string $constructString = $currentObj + ".visibility";
+        
+
+        
+        //Determine if we are on to the next frame
+        if($i%$markerCount == 1.0) {
+            $currentFrame += 1;
+            currentTime $currentFrame;  
+        }
+        
+        //Keyframe visibility
+        setAttr $constructString 1;
+        setKeyframe -breakdown 0 -hierarchy none -controlPoints 0 -shape 0 {$currentObj};
+    }
+}
+
+keyframe_mesh_groups(9, "pSphere", 3, 1);
